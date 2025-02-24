@@ -20,6 +20,7 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
+    this.count = 16;
     this.title = "";
     this.t = this.t || {};
     this.t = {
@@ -39,7 +40,8 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
   static get properties() {
     return {
       ...super.properties,
-      title: { type: String },
+      
+      count: { type: Number, reflect : true },
     };
   }
 
@@ -53,12 +55,24 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
       }
+      :host([count="21"]) {
+        color: var(--ddd-theme-default-athertonViolet);
+      }
+      :host([count="18"]) {
+        color: var(--ddd-theme-default-pughBlue);
+      }
+      :host([count="10"]) {
+        color: var(--ddd-theme-default-pughBlue);
+      }
+      :host([count="25"]) {
+        color: var(--ddd-theme-default-pughBlue);
+      }
       .wrapper {
         margin: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-4);
       }
-      h3 span {
-        font-size: var(--counter-app-label-font-size, var(--ddd-font-size-s));
+      .counter {
+        font-size: var(--counter-app-label-font-size, var(--ddd-font-size-xxl));
       }
     `];
   }
@@ -66,10 +80,28 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
+    <confetti-container id="confetti"></confetti-container>
 <div class="wrapper">
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <slot></slot>
+  <div class="counter">${this.count}</div>
+  <div class="buttons">
+    <button @click ="${this.decrease}">-1</button>
+    
+    <button @click="${this.increase}">+1</button>
+  </div>
 </div>`;
+  }
+  increase() {
+    if(this.count < 25) {
+      this.count++;
+}
+}
+  decrease() {
+    if(this.count > 10) {
+      this.count--;
+  }
+}
+  reset() {
+    this.count = 16;
   }
 
   /**
